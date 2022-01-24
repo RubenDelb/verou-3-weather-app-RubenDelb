@@ -2,4 +2,10 @@
   margin: 0;
   padding: 0;
 }
+
+body {
+  text-align: center;
+  background: -webkit-gradient(linear, left top, right top, from(#2c8253), to(#279acd));
+  background: linear-gradient(90deg, #2c8253 0%, #279acd 100%);
+}
 /*# sourceMappingURL=style.css.map */
