@@ -4,6 +4,18 @@
 }
 
 body {
+    height: 100vh;
+    background: linear-gradient(90deg, #6242DA 0%, #4B9ED8 40%, #48C0D3 100%);
     text-align: center;
-    background: linear-gradient(90deg, rgba(44, 130, 83, 1) 0%, rgba(39, 154, 205, 1) 100%);
+}
+
+.imageDiv {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.windArrow {
+    width: 35px;
+    transform: rotate3d(0, 0, 1, 256deg);
 }
