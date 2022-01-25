@@ -5,8 +5,106 @@
 
 body {
     height: 100vh;
-    background: linear-gradient(90deg, #6242DA 0%, #4B9ED8 40%, #48C0D3 100%);
+    background-image: url(/images/drizzle.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    // background: linear-gradient(90deg, #6242DA 0%, #4B9ED8 40%, #48C0D3 100%);
+    font-family: 'Nunito', sans-serif;
+}
+
+header {
     text-align: center;
+
+    nav {
+        display: flex;
+        justify-content: center;
+    }
+
+    #searchBar {
+        padding: 5px;
+        border-radius: 10px 0 0 10px;
+        font-size: 16px;
+        height: 30px;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    #submitBtn {
+        background: rgba(255, 255, 255, 0.5);
+        height: 44px;
+        padding: 5px;
+        border: 2px solid;
+        border-radius: 0 10px 10px 0;
+
+        .searchIcon {
+            width: 30px;
+        }
+    }
+}
+
+#wrapperDays {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+
+
+    .card {
+        margin-top: 20px;
+        width: 300px;
+        background-color: rgba(255, 255, 240, 0.7);
+        box-sizing: content-box;
+        padding: 15px;
+        border-radius: 15px;
+
+        .displayDay {
+            text-align: center;
+            padding: 5px;
+        }
+
+
+        .weatherImgDiv {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+
+
+            .windDiv {
+                all: inherit;
+                padding: 0px 20px;
+
+                .windIcon {
+                    margin: 0px 20px;
+                }
+
+                .windSpeed {
+                    font-style: italic;
+                }
+            }
+        }
+
+        .weatherInfoDiv {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+
+            .temperatureDiv {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-content: center;
+            }
+
+            .weatherDescription {
+                font-style: italic;
+            }
+        }
+    }
 }
 
 .windIcon {

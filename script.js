@@ -58,7 +58,7 @@ submitBtn.addEventListener("click", () => {
 
                         const windSpeed = document.createElement("h5");
                         windSpeed.className = "windSpeed";
-                        windSpeed.innerHTML = Math.round(result.daily[i].wind_speed * 3.6) + "km/h"
+                        windSpeed.innerHTML = Math.round(result.daily[i].wind_speed * 3.6) + " km/h"
                         windDescriptionDiv.appendChild(windSpeed);
 
                         const degree = windDirectionConvertor(result, i);
@@ -81,12 +81,12 @@ submitBtn.addEventListener("click", () => {
 
                         const tempMax = document.createElement("p");
                         tempMax.className = "tempMax";
-                        tempMax.innerHTML = Math.round(result.daily[i].temp.max) + "°C";
+                        tempMax.innerHTML = "Max: " + Math.round(result.daily[i].temp.max) + "°C";
                         temperatureDiv.appendChild(tempMax);
 
                         const tempMin = document.createElement("p");
                         tempMin.className = "tempMin";
-                        tempMin.innerHTML = result.daily[i].temp.min + "°C";
+                        tempMin.innerHTML = "Min: " + Math.round(result.daily[i].temp.min) + "°C";
                         temperatureDiv.appendChild(tempMin);
                     }
                 })

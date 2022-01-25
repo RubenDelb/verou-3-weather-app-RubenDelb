@@ -5,9 +5,143 @@
 
 body {
   height: 100vh;
-  background: -webkit-gradient(linear, left top, right top, from(#6242DA), color-stop(40%, #4B9ED8), to(#48C0D3));
-  background: linear-gradient(90deg, #6242DA 0%, #4B9ED8 40%, #48C0D3 100%);
+  background-image: url(/images/drizzle.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: 'Nunito', sans-serif;
+}
+
+header {
   text-align: center;
+}
+
+header nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+header #searchBar {
+  padding: 5px;
+  border-radius: 10px 0 0 10px;
+  font-size: 16px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+header #submitBtn {
+  background: rgba(255, 255, 255, 0.5);
+  height: 44px;
+  padding: 5px;
+  border: 2px solid;
+  border-radius: 0 10px 10px 0;
+}
+
+header #submitBtn .searchIcon {
+  width: 30px;
+}
+
+#wrapperDays {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  justify-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#wrapperDays .card {
+  margin-top: 20px;
+  width: 300px;
+  background-color: rgba(255, 255, 240, 0.7);
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+#wrapperDays .card .displayDay {
+  text-align: center;
+  padding: 5px;
+}
+
+#wrapperDays .card .weatherImgDiv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#wrapperDays .card .weatherImgDiv .windDiv {
+  all: inherit;
+  padding: 0px 20px;
+}
+
+#wrapperDays .card .weatherImgDiv .windDiv .windIcon {
+  margin: 0px 20px;
+}
+
+#wrapperDays .card .weatherImgDiv .windDiv .windSpeed {
+  font-style: italic;
+}
+
+#wrapperDays .card .weatherInfoDiv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#wrapperDays .card .weatherInfoDiv .temperatureDiv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+}
+
+#wrapperDays .card .weatherInfoDiv .weatherDescription {
+  font-style: italic;
 }
 
 .windIcon {
