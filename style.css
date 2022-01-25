@@ -10,20 +10,7 @@ body {
   text-align: center;
 }
 
-.imageDiv {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -ms-flex-line-pack: center;
-      align-content: center;
-}
-
-.windArrow {
-  width: 35px;
-  -webkit-transform: rotate3d(0, 0, 1, 256deg);
-          transform: rotate3d(0, 0, 1, 256deg);
+.windIcon {
+  width: 30px;
 }
 /*# sourceMappingURL=style.css.map */

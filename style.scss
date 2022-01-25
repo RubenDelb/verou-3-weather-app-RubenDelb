@@ -9,13 +9,6 @@ body {
     text-align: center;
 }
 
-.imageDiv {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-}
-
-.windArrow {
-    width: 35px;
-    transform: rotate3d(0, 0, 1, 256deg);
+.windIcon {
+    width: 30px;
 }
