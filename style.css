@@ -1,6 +1,8 @@
 * {
   margin: 0;
   padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 body {
@@ -27,13 +29,15 @@ header nav {
 
 header #searchBar {
   padding: 5px;
+  border: 2px solid;
   border-radius: 10px 0 0 10px;
   font-size: 16px;
-  height: 30px;
+  height: 44px;
   background: rgba(255, 255, 255, 0.5);
 }
 
 header #submitBtn {
+  margin-left: -1px;
   background: rgba(255, 255, 255, 0.5);
   height: 44px;
   padding: 5px;
@@ -45,7 +49,17 @@ header #submitBtn .searchIcon {
   width: 30px;
 }
 
-#wrapperDays {
+main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  justify-self: center;
+}
+
+.Slideshow {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -62,11 +76,15 @@ header #submitBtn .searchIcon {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  justify-self: center;
+  -ms-flex-item-align: center;
+      align-self: center;
+  width: 80vw;
 }
 
-#wrapperDays .card {
+.Slideshow .card {
   margin-top: 20px;
-  width: 300px;
+  width: 80vw;
   background-color: rgba(255, 255, 240, 0.7);
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
@@ -74,12 +92,12 @@ header #submitBtn .searchIcon {
   border-radius: 15px;
 }
 
-#wrapperDays .card .displayDay {
+.Slideshow .card .displayDay {
   text-align: center;
   padding: 5px;
 }
 
-#wrapperDays .card .weatherImgDiv {
+.Slideshow .card .weatherImgDiv {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -97,20 +115,20 @@ header #submitBtn .searchIcon {
           align-items: center;
 }
 
-#wrapperDays .card .weatherImgDiv .windDiv {
+.Slideshow .card .weatherImgDiv .windDiv {
   all: inherit;
   padding: 0px 20px;
 }
 
-#wrapperDays .card .weatherImgDiv .windDiv .windIcon {
+.Slideshow .card .weatherImgDiv .windDiv .windIcon {
   margin: 0px 20px;
 }
 
-#wrapperDays .card .weatherImgDiv .windDiv .windSpeed {
+.Slideshow .card .weatherImgDiv .windDiv .windSpeed {
   font-style: italic;
 }
 
-#wrapperDays .card .weatherInfoDiv {
+.Slideshow .card .weatherInfoDiv {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -125,7 +143,7 @@ header #submitBtn .searchIcon {
           align-items: center;
 }
 
-#wrapperDays .card .weatherInfoDiv .temperatureDiv {
+.Slideshow .card .weatherInfoDiv .temperatureDiv {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -140,7 +158,7 @@ header #submitBtn .searchIcon {
       align-content: center;
 }
 
-#wrapperDays .card .weatherInfoDiv .weatherDescription {
+.Slideshow .card .weatherInfoDiv .weatherDescription {
   font-style: italic;
 }
 

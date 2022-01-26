@@ -3,98 +3,110 @@ import Data from "/config.js";
 const searchBar = document.getElementById("searchBar");
 const submitBtn = document.getElementById("submitBtn");
 const wrapperDays = document.getElementById("wrapperDays");
-
+const carouselInner = document.getElementById("carouselInner")
 submitBtn.addEventListener("click", () => {
-    wrapperDays.innerHTML = ""; //Make sure the previous searchresults will disappear
+    carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
     let searchInput = searchBar.value.toLowerCase();
     fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchInput + '&appid=' + Data.key)
         .then(response => response.json())
         .then(data => {
             const lat = data.city.coord.lat; //catch the latitude of the city that the user has typed
             const long = data.city.coord.lon; //catch the longitude of the city that the user has typed
-            fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&exclude=minutely,hourly&units=metric&appid=' + Data.key)
+            fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&exclude=minutely&units=metric&appid=' + Data.key)
                 .then(response => response.json())
                 .then(result => {
                     console.log(result);
+                    console.log(result.timezone_offset);
 
+                    createCards(result, result.daily[0]);
 
-                    for (let i = 0; i < result.daily.length; i++) {
-                        const card = document.createElement("div");
-                        card.className = "card";
-                        wrapperDays.appendChild(card);
-
-                        const displayDay = document.createElement("h3");
-                        let sec = result.daily[i].dt;
-                        displayDay.innerHTML = new Date(sec * 1000).toDateString();
-                        displayDay.className = "displayDay";
-                        card.append(displayDay);
-
-                        const weatherImgDiv = document.createElement("div");
-                        weatherImgDiv.className = "weatherImgDiv";
-                        card.appendChild(weatherImgDiv);
-
-                        const weatherInfoDiv = document.createElement("div");
-                        weatherInfoDiv.className = "weatherInfoDiv";
-                        card.appendChild(weatherInfoDiv);
-
-                        const weatherIcon = document.createElement("img");
-                        weatherIcon.src = "http://openweathermap.org/img/wn/" + result.daily[i].weather[0].icon + "@2x.png";
-                        weatherIcon.className = "weatherIcon";
-                        weatherImgDiv.appendChild(weatherIcon);
-
-                        const windDiv = document.createElement("div");
-                        windDiv.className = "windDiv";
-                        weatherImgDiv.appendChild(windDiv);
-
-                        const windIcon = document.createElement("img");
-                        windIcon.src = "/images/up-arrow-svgrepo-com.svg";
-                        windIcon.className = "windIcon"
-                        windIcon.style.transform = "rotate3d(0, 0, 1, " + result.daily[i].wind_deg + "deg)";
-                        windDiv.appendChild(windIcon);
-
-                        const windDescriptionDiv = document.createElement("div");
-                        windDescriptionDiv.className = "windDescriptionDiv";
-                        windDiv.appendChild(windDescriptionDiv);
-
-                        const windSpeed = document.createElement("h5");
-                        windSpeed.className = "windSpeed";
-                        windSpeed.innerHTML = Math.round(result.daily[i].wind_speed * 3.6) + " km/h"
-                        windDescriptionDiv.appendChild(windSpeed);
-
-                        const degree = windDirectionConvertor(result, i);
-                        //result AND i are inside the () to send the values of both to the function, 
-                        // so the function has the correct parameters to work with
-
-                        const windDirection = document.createElement("p");
-                        windDirection.className = "windDirection";
-                        windDirection.innerHTML = degree;
-                        windDescriptionDiv.appendChild(windDirection);
-
-                        const temperatureDiv = document.createElement("div");
-                        temperatureDiv.className = "temperatureDiv";
-                        weatherInfoDiv.appendChild(temperatureDiv);
-
-                        const weatherDescription = document.createElement("p");
-                        weatherDescription.className = "weatherDescription";
-                        weatherDescription.innerHTML = result.daily[i].weather[0].description;
-                        weatherInfoDiv.appendChild(weatherDescription);
-
-                        const tempMax = document.createElement("p");
-                        tempMax.className = "tempMax";
-                        tempMax.innerHTML = "Max: " + Math.round(result.daily[i].temp.max) + "°C";
-                        temperatureDiv.appendChild(tempMax);
-
-                        const tempMin = document.createElement("p");
-                        tempMin.className = "tempMin";
-                        tempMin.innerHTML = "Min: " + Math.round(result.daily[i].temp.min) + "°C";
-                        temperatureDiv.appendChild(tempMin);
+                    for (let i = 1; i < result.daily.length; i++) {
+                        createCards(result, result.daily[i]);
                     }
                 })
         });
 });
 
-function windDirectionConvertor(result, i) {
-    let deg = Math.floor(result.daily[i].wind_deg);
+function createCards(result, dailyResult) {
+    const carouselInner = document.getElementById("carouselInner")
+    const card = document.createElement("div");
+    if (dailyResult == result.daily[0]){
+        card.classList.add("card", "carousel-item", "active");
+    }
+    else {
+        card.classList.add("card", "carousel-item");
+    }
+    carouselInner.appendChild(card);
+
+    const displayDay = document.createElement("h3");
+    let sec = dailyResult.dt + result.timezone_offset;
+    displayDay.innerHTML = new Date(sec * 1000).toDateString();
+    displayDay.className = "displayDay";
+    card.append(displayDay);
+
+    const weatherImgDiv = document.createElement("div");
+    weatherImgDiv.className = "weatherImgDiv";
+    card.appendChild(weatherImgDiv);
+
+    const weatherInfoDiv = document.createElement("div");
+    weatherInfoDiv.className = "weatherInfoDiv";
+    card.appendChild(weatherInfoDiv);
+
+    const weatherIcon = document.createElement("img");
+    weatherIcon.src = "http://openweathermap.org/img/wn/" + dailyResult.weather[0].icon + "@2x.png";
+    weatherIcon.className = "weatherIcon";
+    weatherImgDiv.appendChild(weatherIcon);
+
+    const windDiv = document.createElement("div");
+    windDiv.className = "windDiv";
+    weatherImgDiv.appendChild(windDiv);
+
+    const windIcon = document.createElement("img");
+    windIcon.src = "/images/up-arrow-svgrepo-com.svg";
+    windIcon.className = "windIcon"
+    windIcon.style.transform = "rotate3d(0, 0, 1, " + dailyResult.wind_deg + "deg)";
+    windDiv.appendChild(windIcon);
+
+    const windDescriptionDiv = document.createElement("div");
+    windDescriptionDiv.className = "windDescriptionDiv";
+    windDiv.appendChild(windDescriptionDiv);
+
+    const windSpeed = document.createElement("h5");
+    windSpeed.className = "windSpeed";
+    windSpeed.innerHTML = Math.round(dailyResult.wind_speed * 3.6) + " km/h"
+    windDescriptionDiv.appendChild(windSpeed);
+
+    const degree = windDirectionConvertor(dailyResult);
+    //result AND i are inside the () to send the values of both to the function, 
+    // so the function has the correct parameters to work with
+
+    const windDirection = document.createElement("p");
+    windDirection.className = "windDirection";
+    windDirection.innerHTML = degree;
+    windDescriptionDiv.appendChild(windDirection);
+
+    const temperatureDiv = document.createElement("div");
+    temperatureDiv.className = "temperatureDiv";
+    weatherInfoDiv.appendChild(temperatureDiv);
+
+    const weatherDescription = document.createElement("p");
+    weatherDescription.className = "weatherDescription";
+    weatherDescription.innerHTML = dailyResult.weather[0].description;
+    weatherInfoDiv.appendChild(weatherDescription);
+
+    const tempMax = document.createElement("p");
+    tempMax.className = "tempMax";
+    tempMax.innerHTML = "Max: " + Math.round(dailyResult.temp.max) + "°C";
+    temperatureDiv.appendChild(tempMax);
+
+    const tempMin = document.createElement("p");
+    tempMin.className = "tempMin";
+    tempMin.innerHTML = "Min: " + Math.round(dailyResult.temp.min) + "°C";
+    temperatureDiv.appendChild(tempMin);
+}
+
+function windDirectionConvertor(dailyData) {
+    let deg = Math.floor(dailyData.wind_deg);
     switch (true) {
         case deg >= 360 && deg <= 21:
             deg = "N";

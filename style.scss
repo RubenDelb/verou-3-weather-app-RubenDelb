@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -23,13 +24,15 @@ header {
 
     #searchBar {
         padding: 5px;
+        border: 2px solid;
         border-radius: 10px 0 0 10px;
         font-size: 16px;
-        height: 30px;
+        height: 44px;
         background: rgba(255, 255, 255, 0.5);
     }
 
     #submitBtn {
+        margin-left: -1px;
         background: rgba(255, 255, 255, 0.5);
         height: 44px;
         padding: 5px;
@@ -42,18 +45,27 @@ header {
     }
 }
 
-#wrapperDays {
+main {
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+}
+
+.Slideshow {
     display: flex;
     flex-direction: column;
     align-content: center;
     justify-content: center;
     justify-items: center;
     align-items: center;
+    justify-self: center;
+    align-self: center;
+    width: 80vw;
 
 
     .card {
         margin-top: 20px;
-        width: 300px;
+        width: 80vw;
         background-color: rgba(255, 255, 240, 0.7);
         box-sizing: content-box;
         padding: 15px;
