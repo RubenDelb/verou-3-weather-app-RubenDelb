@@ -17,6 +17,11 @@ body {
 header {
     text-align: center;
 
+    h1 {
+        font-weight: 900;
+        color: rgb(250, 245, 227);
+    }
+
     nav {
         display: flex;
         justify-content: center;
@@ -49,6 +54,8 @@ main {
     display: flex;
     justify-content: center;
     justify-self: center;
+    justify-items: center;
+    flex-direction: column;
 }
 
 .Slideshow {
@@ -60,13 +67,13 @@ main {
     align-items: center;
     justify-self: center;
     align-self: center;
-    width: 80vw;
+    width: 100vw;
 
 
     .card {
         margin-top: 20px;
-        width: 80vw;
-        background-color: rgba(255, 255, 240, 0.7);
+        width: 100vw;
+        background-color: rgba(255, 255, 240, 0.8);
         box-sizing: content-box;
         padding: 15px;
         border-radius: 15px;
@@ -91,6 +98,7 @@ main {
 
                 .windIcon {
                     margin: 0px 20px;
+                    width: 30px;
                 }
 
                 .windSpeed {
@@ -119,6 +127,36 @@ main {
     }
 }
 
-.windIcon {
+.currentWeatherCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-self: center;
+    align-content: center;
+    margin-top: 20px;
+    background-color: rgb(248, 248, 240);
+    padding: 15px;
+    border-radius: 15px;
+    width: 90vw;
+    margin-left: 5vw;
+
+    .currentTitle {
+        font-weight: 900;
+    }
+
+    .currentInfoDiv {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-content: center;
+        align-items: center;
+
+        .iconCurrent {
+            width: 130px;
+        }
+    }
+}
+
+.currentWindIcon {
     width: 30px;
 }

@@ -23,29 +23,51 @@
     <header>
         <h1>Weather Checker</h1>
         <nav>
-            <input id="searchBar" type="text" name="search" placeholder="Search city">
+            <input id="searchBar" type="search" name="search" placeholder="Search city">
             <button id="submitBtn">
                 <img class="searchIcon" src="/images/loupe-svgrepo-com.svg" alt="searchIcon">
             </button>
         </nav>
     </header>
     <main>
+        
         <div class="Slideshow">
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner" id="carouselInner">
-
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5"
+                        aria-label="Slide 6"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6"
+                        aria-label="Slide 7"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="7"
+                        aria-label="Slide 8"></button>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                <div class="carousel-inner" id="carouselInner">
+                    <!-- JAVASCRIPT CARDS WITH DAILY WEATHER COME HERE IF SEARCHBUTTON IS CLICKED -->
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
+        </div>
+        <div id="currentWeatherWrapper">
+            <!-- JAVASCRIPT CARD WITH CURRENT WEATHER COMES HERE IF SEARCHBUTTON IS CLICKED -->
         </div>
     </main>
     <script type="module" src="script.js"></script>

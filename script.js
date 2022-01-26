@@ -2,9 +2,11 @@ import Data from "/config.js";
 
 const searchBar = document.getElementById("searchBar");
 const submitBtn = document.getElementById("submitBtn");
-const wrapperDays = document.getElementById("wrapperDays");
-const carouselInner = document.getElementById("carouselInner")
+const currentWeatherWrapper = document.getElementById("currentWeatherWrapper");
+const carouselInner = document.getElementById("carouselInner");
+
 submitBtn.addEventListener("click", () => {
+    currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
     carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
     let searchInput = searchBar.value.toLowerCase();
     fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchInput + '&appid=' + Data.key)
@@ -16,24 +18,75 @@ submitBtn.addEventListener("click", () => {
                 .then(response => response.json())
                 .then(result => {
                     console.log(result);
-                    console.log(result.timezone_offset);
 
-                    createCards(result, result.daily[0]);
+                    createCurrentCard(result);
 
+                    createDailyCard(result, result.daily[0]);
+                    
                     for (let i = 1; i < result.daily.length; i++) {
-                        createCards(result, result.daily[i]);
+                        createDailyCard(result, result.daily[i]);
                     }
                 })
         });
 });
 
-function createCards(result, dailyResult) {
+function createCurrentCard(result) {
+    const currentWeatherWrapper = document.getElementById("currentWeatherWrapper")
+    const currentWeatherCard = document.createElement("div");
+    currentWeatherCard.classList.add("currentWeatherCard");
+    currentWeatherWrapper.appendChild(currentWeatherCard);
+
+    const currentTitleDiv = document.createElement("div");
+    currentTitleDiv.className = "currentTitleDiv";
+    currentWeatherCard.appendChild(currentTitleDiv);
+
+    const currentInfoDiv = document.createElement("div");
+    currentInfoDiv.className = "currentInfoDiv";
+    currentWeatherCard.appendChild(currentInfoDiv);
+
+    const currentTitle = document.createElement("h3");
+    currentTitle.innerHTML = "Current Weather";
+    currentTitle.className = "currentTitle";
+    currentTitleDiv.append(currentTitle);
+
+    const currentHour = document.createElement("p");
+    let sec = result.current.dt + result.timezone_offset;
+    currentHour.innerHTML = "at " + (new Date(sec * 1000).getHours() - 1) + "h";
+    currentHour.className = "currentHour";
+    currentTitleDiv.append(currentHour);
+
+    const iconCurrent = document.createElement("img");
+    iconCurrent.src = "http://openweathermap.org/img/wn/" + result.current.weather[0].icon + "@2x.png";
+    iconCurrent.className = "iconCurrent";
+    currentInfoDiv.appendChild(iconCurrent);
+
+    const temperatureCurrent = document.createElement("h1");
+    temperatureCurrent.className = "temperatureCurrent";
+    temperatureCurrent.innerHTML = Math.round(result.current.temp) + "°C";
+    currentInfoDiv.appendChild(temperatureCurrent);
+
+    const currentWindDiv = document.createElement("div");
+    currentWindDiv.className = "currentWindDiv";
+    currentInfoDiv.appendChild(currentWindDiv);
+
+    const currentWindIcon = document.createElement("img");
+    currentWindIcon.src = "/images/up-arrow-svgrepo-com.svg";
+    currentWindIcon.className = "currentWindIcon"
+    currentWindIcon.style.transform = "rotate3d(0, 0, 1, " + result.current.wind_deg + "deg)";
+    currentWindDiv.appendChild(currentWindIcon);
+
+    const currentWindSpeed = document.createElement("h5");
+    currentWindSpeed.className = "currentWindSpeed";
+    currentWindSpeed.innerHTML = Math.round(result.current.wind_speed * 3.6) + " km/h"
+    currentWindDiv.appendChild(currentWindSpeed);
+}
+
+function createDailyCard(result, dailyResult) {
     const carouselInner = document.getElementById("carouselInner")
     const card = document.createElement("div");
-    if (dailyResult == result.daily[0]){
+    if (dailyResult == result.daily[0]) {
         card.classList.add("card", "carousel-item", "active");
-    }
-    else {
+    } else {
         card.classList.add("card", "carousel-item");
     }
     carouselInner.appendChild(card);
