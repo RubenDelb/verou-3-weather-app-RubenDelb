@@ -14,6 +14,7 @@ submitBtn.addEventListener("click", () => {
         .then(data => {
             const lat = data.city.coord.lat; //catch the latitude of the city that the user has typed
             const long = data.city.coord.lon; //catch the longitude of the city that the user has typed
+
             fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&exclude=minutely&units=metric&appid=' + Data.key)
                 .then(response => response.json())
                 .then(result => {
@@ -22,10 +23,12 @@ submitBtn.addEventListener("click", () => {
                     createCurrentCard(result);
 
                     createDailyCard(result, result.daily[0]);
-                    
+
                     for (let i = 1; i < result.daily.length; i++) {
                         createDailyCard(result, result.daily[i]);
                     }
+
+                    createChart(result);
                 })
         });
 });
@@ -215,3 +218,58 @@ function windDirectionConvertor(dailyData) {
     return deg;
     // return is very important to output the wanted result when the function is called.
 }
+
+function createChart(result) {
+
+    const labels = [];
+
+    for (let i = 0; i < 24; i++) { //Create the labels: ex: 14h, 15h, 16h,... for the upcoming 24hours
+        const unixHour = result.hourly[i].dt + result.timezone_offset;
+        const localHour = (new Date(unixHour * 1000).getHours() - 1) + "h";
+        labels.push(localHour); //push every created hour inside the "labels"-array.
+    }
+
+    let rainData = [];
+    for (let i = 0; i < 24; i++) {
+
+        if (typeof result.hourly[i].rain != "undefined") {
+            //the raindata exists
+            console.log(result.hourly[i].rain);
+            rainData.push(result.hourly[i].rain["1h"]);
+        } else if (typeof result.hourly[i].snow != "undefined") {
+            //the snowdata exists
+            console.log(result.hourly[i].snow);
+            rainData.push(result.hourly[i].snow["1h"]);
+        } else {
+            // raindata or snowdata do not exist
+            rainData.push(0);
+        }
+    }
+    console.log(rainData);
+
+    const data = {
+        labels: labels,
+        datasets: [{
+                label: '24h-precipitation in mm',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: rainData,
+            }, {
+
+                type: 'line',
+                label: 'Windspeed in m/s',
+                data: [50, 50, 50, 50],
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {}
+        };
+
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    }

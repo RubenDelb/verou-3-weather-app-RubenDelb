@@ -224,4 +224,14 @@ main {
 .currentWindIcon {
   width: 30px;
 }
+
+#myChart {
+  background-color: #f8f8f0;
+  width: 90vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  padding: 15px;
+  border-radius: 15px;
+  margin-top: 20px;
+}
 /*# sourceMappingURL=style.css.map */
