@@ -15,8 +15,6 @@ body {
 }
 
 header {
-  padding: 20px 0;
-  background-color: rgba(24, 24, 24, 0.5);
   text-align: center;
 }
 
@@ -97,7 +95,7 @@ main {
 .Slideshow .card {
   margin-top: 20px;
   width: 100vw;
-  background-color: rgba(255, 255, 240, 0.6);
+  background-color: rgba(255, 255, 240, 0.8);
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
   padding: 15px;
@@ -190,7 +188,7 @@ main {
   -ms-flex-line-pack: center;
       align-content: center;
   margin-top: 20px;
-  background-color: rgba(248, 248, 240, 0.8);
+  background-color: #f8f8f0;
   padding: 15px;
   border-radius: 15px;
   width: 90vw;
@@ -227,10 +225,8 @@ main {
   width: 30px;
 }
 
-#myChart,
-#mySecondChart {
-  display: none;
-  background-color: rgba(248, 248, 240, 0.8);
+#myChart {
+  background-color: #f8f8f0;
   width: 90vw;
   margin-left: 5vw;
   margin-right: 5vw;
