@@ -219,15 +219,10 @@ function windDirectionConvertor(dailyData) {
     // return is very important to output the wanted result when the function is called.
 }
 
+let myChart = null;
+
 function createChart(result) {
-
-    const labels = [];
-
-    for (let i = 0; i < 24; i++) { //Create the labels: ex: 14h, 15h, 16h,... for the upcoming 24hours
-        const unixHour = result.hourly[i].dt + result.timezone_offset;
-        const localHour = (new Date(unixHour * 1000).getHours() - 1) + "h";
-        labels.push(localHour); //push every created hour inside the "labels"-array.
-    }
+    const labels = getEveryHour(result);
 
     let rainData = [];
     for (let i = 0; i < 24; i++) {
@@ -247,29 +242,62 @@ function createChart(result) {
     }
     console.log(rainData);
 
+    let windSpeedData = [];
+
+    for (let i = 0; i < 24; i++) {
+        const hourlyWindSpeed = result.hourly[i].wind_speed;
+        windSpeedData.push(hourlyWindSpeed);
+    }
+
     const data = {
         labels: labels,
         datasets: [{
-                label: '24h-precipitation in mm',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: rainData,
-            }, {
+            label: 'Precipitation in mm',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: rainData,
+        }, {
+            type: 'line',
+            label: 'Windspeed in m/s',
+            data: windSpeedData,
+            borderColor: 'rgb(44, 116, 150)',
+        }, {
+            type: 'line',
+            label: 'Windgusts in m/s',
+            data: windSpeedData,
+            borderColor: 'rgb(44, 116, 150)',
+        }]
+    };
 
-                type: 'line',
-                label: 'Windspeed in m/s',
-                data: [50, 50, 50, 50],
-            }]
-        };
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
 
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {}
-        };
-
-        const myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
+    if (myChart != null) {
+        myChart.destroy();
     }
+
+    myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+}
+
+function getEveryHour(result) {
+    const labels = [];
+
+    for (let i = 0; i < 24; i++) { //Create the labels: ex: 14h, 15h, 16h,... for the upcoming 24hours
+        const unixHour = result.hourly[i].dt + result.timezone_offset;
+        const localHour = (new Date(unixHour * 1000).getHours()) + "h";
+        labels.push(localHour); //push every created hour inside the "labels"-array.
+    }
+    return labels;
+}
