@@ -5,10 +5,18 @@ const submitBtn = document.getElementById("submitBtn");
 const currentWeatherWrapper = document.getElementById("currentWeatherWrapper");
 const carouselInner = document.getElementById("carouselInner");
 
+const UNSPLASH_API_KEY = "eplf4yPTvYafu8B4I-dv8wgvjzikhQsN9NCI3ju6Tbg"
 submitBtn.addEventListener("click", () => {
     currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
     carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
     let searchInput = searchBar.value.toLowerCase();
+    fetch("https://api.unsplash.com/search/photos?query=" + searchInput + "&client_id=" + UNSPLASH_API_KEY)
+        .then(response => response.json())
+        .then(unsplashData => {
+            console.log(unsplashData);
+            document.body.style.backgroundImage = "url(" +unsplashData.results[0].urls.full
+        })
+
     fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchInput + '&appid=' + Data.key)
         .then(response => response.json())
         .then(data => {
@@ -29,6 +37,8 @@ submitBtn.addEventListener("click", () => {
                     }
 
                     createChart(result);
+
+                    createSecondChart(result);
                 })
         });
 });
@@ -275,7 +285,7 @@ function createChart(result) {
         options: {
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: false
                 }
             }
         }
@@ -287,6 +297,61 @@ function createChart(result) {
 
     myChart = new Chart(
         document.getElementById('myChart'),
+        config
+    );
+}
+
+let mySecondChart = null;
+
+function createSecondChart(result) {
+    const labels = getEveryHour(result);
+
+    let temperatureData = [];
+    for (let i = 0; i < 24; i++) {
+        const hourlyTemperatureData = result.hourly[i].temp;
+        temperatureData.push(hourlyTemperatureData);
+    }
+
+    console.log(temperatureData);
+
+    let feelTemperatureData = [];
+
+    for (let i = 0; i < 24; i++) {
+        const hourlyFeelTemperature = result.hourly[i].feels_like;
+        feelTemperatureData.push(hourlyFeelTemperature);
+    }
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Actual Temperature',
+            borderColor: 'rgb(255, 99, 132)',
+            data: temperatureData,
+        }, {
+            label: 'Feels-like Temperature',
+            data: feelTemperatureData,
+            borderColor: 'rgb(44, 116, 150)',
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    };
+
+    if (mySecondChart != null) {
+        mySecondChart.destroy();
+    }
+
+    mySecondChart = new Chart(
+        document.getElementById('mySecondChart'),
         config
     );
 }
