@@ -180,6 +180,61 @@ function createDailyCard(result, dailyResult) {
     temperatureDiv.appendChild(tempMin);
 }
 
+let myFirstChart = null;
+
+function createSecondChart(result) {
+    const labels = getEveryHour(result);
+
+    let temperatureData = [];
+    for (let i = 0; i < 24; i++) {
+        const hourlyTemperatureData = result.hourly[i].temp;
+        temperatureData.push(hourlyTemperatureData);
+    }
+
+    console.log(temperatureData);
+
+    let feelTemperatureData = [];
+
+    for (let i = 0; i < 24; i++) {
+        const hourlyFeelTemperature = result.hourly[i].feels_like;
+        feelTemperatureData.push(hourlyFeelTemperature);
+    }
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Actual Temperature',
+            borderColor: 'rgb(255, 99, 132)',
+            data: temperatureData,
+        }, {
+            label: 'Feels-like Temperature',
+            data: feelTemperatureData,
+            borderColor: 'rgb(44, 116, 150)',
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    };
+
+    if (myFirstChart != null) {
+        myFirstChart.destroy();
+    }
+
+    myFirstChart = new Chart(
+        document.getElementById('myFirstChart'),
+        config
+    );
+}
+
 let mySecondChart = null;
 
 function createChart(result) {
@@ -248,61 +303,6 @@ function createChart(result) {
 
     mySecondChart = new Chart(
         document.getElementById('mySecondChart'),
-        config
-    );
-}
-
-let myFirstChart = null;
-
-function createSecondChart(result) {
-    const labels = getEveryHour(result);
-
-    let temperatureData = [];
-    for (let i = 0; i < 24; i++) {
-        const hourlyTemperatureData = result.hourly[i].temp;
-        temperatureData.push(hourlyTemperatureData);
-    }
-
-    console.log(temperatureData);
-
-    let feelTemperatureData = [];
-
-    for (let i = 0; i < 24; i++) {
-        const hourlyFeelTemperature = result.hourly[i].feels_like;
-        feelTemperatureData.push(hourlyFeelTemperature);
-    }
-
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'Actual Temperature',
-            borderColor: 'rgb(255, 99, 132)',
-            data: temperatureData,
-        }, {
-            label: 'Feels-like Temperature',
-            data: feelTemperatureData,
-            borderColor: 'rgb(44, 116, 150)',
-        }]
-    };
-
-    const config = {
-        type: 'line',
-        data: data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: false
-                }
-            }
-        }
-    };
-
-    if (myFirstChart != null) {
-        myFirstChart.destroy();
-    }
-
-    myFirstChart = new Chart(
-        document.getElementById('myFirstChart'),
         config
     );
 }
