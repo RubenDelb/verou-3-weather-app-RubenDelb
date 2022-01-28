@@ -7,7 +7,7 @@
 
 body {
   height: 100vh;
-  background-image: url(/images/drizzle.jpg);
+  background-image: url(/images/background.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -228,9 +228,10 @@ main {
 }
 
 #myFirstChart,
-#mySecondChart {
+#mySecondChart,
+#myRainChart {
   display: none;
-  background-color: rgba(248, 248, 240, 0.8);
+  background-color: rgba(248, 240, 240, 0.9);
   width: 90vw;
   margin-left: 5vw;
   margin-right: 5vw;

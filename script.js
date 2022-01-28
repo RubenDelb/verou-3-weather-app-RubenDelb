@@ -1,5 +1,7 @@
 import Data from "/config.js";
-import {windDirectionConvertor} from "./windDirectionConvertor.js";
+import {
+    windDirectionConvertor
+} from "./windDirectionConvertor.js";
 
 const searchBar = document.getElementById("searchBar");
 const submitBtn = document.getElementById("submitBtn");
@@ -14,7 +16,8 @@ submitBtn.addEventListener("click", () => {
         .then(response => response.json())
         .then(unsplashData => {
             console.log(unsplashData);
-            document.body.style.backgroundImage = "url(" +unsplashData.results[0].urls.full+ ")"
+            const randomNumber = Math.round(Math.random() * unsplashData.results.length)
+            document.body.style.backgroundImage = "url(" + unsplashData.results[randomNumber].urls.regular + ")"
         })
 
     fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchInput + '&appid=' + Data.key)
@@ -36,9 +39,11 @@ submitBtn.addEventListener("click", () => {
                         createDailyCard(result, result.daily[i]);
                     }
 
-                    createChart(result);
+                    createFirstChart(result);
 
                     createSecondChart(result);
+
+                    createRainChart(result);
                 })
         });
 });
@@ -182,7 +187,7 @@ function createDailyCard(result, dailyResult) {
 
 let myFirstChart = null;
 
-function createSecondChart(result) {
+function createFirstChart(result) {
     const labels = getEveryHour(result);
 
     let temperatureData = [];
@@ -237,56 +242,42 @@ function createSecondChart(result) {
 
 let mySecondChart = null;
 
-function createChart(result) {
+function msToBeaufort(ms) {
+    return Math.ceil(Math.cbrt(Math.pow(ms/0.836, 2)));
+}
+
+function createSecondChart(result) {
     const labels = getEveryHour(result);
-
-    let rainData = [];
-    for (let i = 0; i < 24; i++) {
-
-        if (typeof result.hourly[i].rain != "undefined") {
-            //the raindata exists
-            console.log(result.hourly[i].rain);
-            rainData.push(result.hourly[i].rain["1h"]);
-        } else if (typeof result.hourly[i].snow != "undefined") {
-            //the snowdata exists
-            console.log(result.hourly[i].snow);
-            rainData.push(result.hourly[i].snow["1h"]);
-        } else {
-            // raindata or snowdata do not exist
-            rainData.push(0);
-        }
-    }
-    console.log(rainData);
 
     let windSpeedData = [];
 
     for (let i = 0; i < 24; i++) {
-        const hourlyWindSpeed = result.hourly[i].wind_speed;
+        const hourlyWindSpeed = msToBeaufort(result.hourly[i].wind_speed);
         windSpeedData.push(hourlyWindSpeed);
+    }
+
+    let windGustsData = [];
+
+    for (let i = 0; i < 24; i++) {
+        const hourlyWindGusts = msToBeaufort(result.hourly[i].wind_gust);
+        windGustsData.push(hourlyWindGusts);
     }
 
     const data = {
         labels: labels,
         datasets: [{
-            label: 'Precipitation in mm',
-            backgroundColor: 'rgb(255, 99, 132)',
+            label: 'Windspeed in bft',
+            data: windSpeedData,
             borderColor: 'rgb(255, 99, 132)',
-            data: rainData,
         }, {
-            type: 'line',
-            label: 'Windspeed in m/s',
-            data: windSpeedData,
-            borderColor: 'rgb(44, 116, 150)',
-        }, {
-            type: 'line',
-            label: 'Windgusts in m/s',
-            data: windSpeedData,
+            label: 'Windgusts in bft',
+            data: windGustsData,
             borderColor: 'rgb(44, 116, 150)',
         }]
     };
 
     const config = {
-        type: 'bar',
+        type: 'line',
         data: data,
         options: {
             scales: {
@@ -303,6 +294,78 @@ function createChart(result) {
 
     mySecondChart = new Chart(
         document.getElementById('mySecondChart'),
+        config
+    );
+}
+
+let myRainChart = null;
+
+function createRainChart(result) {
+    const labels = getEveryHour(result);
+
+    let rainData = [];
+    for (let i = 0; i < 24; i++) {
+
+        if (typeof result.hourly[i].rain != "undefined") {
+            //the raindata exists
+            console.log(result.hourly[i].rain);
+            rainData.push(result.hourly[i].rain["1h"]);
+        } else {
+            // raindata does not exist in the openweathermap-data
+            rainData.push(0);
+        }
+    }
+    const rainChartCanvas = document.getElementById('myRainChart');
+
+    let snowData = [];
+    for (let i = 0; i < 24; i++) {
+
+        if (typeof result.hourly[i].snow != "undefined") {
+            //the snowdata exists
+            console.log(result.hourly[i].snow);
+            snowData.push(result.hourly[i].snow["1h"]);
+        } else {
+            // snowdata does not exist in the openweathermap-data
+            snowData.push(0);
+        }
+    }
+    console.log(snowData);
+
+    const data = {
+        labels: labels,
+        datasets: [{
+                label: 'Rain in mm',
+                backgroundColor: 'rgb(49, 135, 216)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: rainData,
+            },
+            {
+                label: 'Snow in mm',
+                backgroundColor: 'rgb(168, 194, 219)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: snowData,
+            }
+        ]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    if (myRainChart != null) {
+        myRainChart.destroy();
+    }
+
+    myRainChart = new Chart(
+        document.getElementById('myRainChart'),
         config
     );
 }
