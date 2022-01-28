@@ -5,12 +5,11 @@ const submitBtn = document.getElementById("submitBtn");
 const currentWeatherWrapper = document.getElementById("currentWeatherWrapper");
 const carouselInner = document.getElementById("carouselInner");
 
-const UNSPLASH_API_KEY = "eplf4yPTvYafu8B4I-dv8wgvjzikhQsN9NCI3ju6Tbg"
 submitBtn.addEventListener("click", () => {
     currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
     carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
     let searchInput = searchBar.value.toLowerCase();
-    fetch("https://api.unsplash.com/search/photos?query=" + searchInput + "&client_id=" + UNSPLASH_API_KEY)
+    fetch("https://api.unsplash.com/search/photos?query=" + searchInput + "&client_id=" + Data.UNSPLASH_API_KEY)
         .then(response => response.json())
         .then(unsplashData => {
             console.log(unsplashData);
