@@ -10,10 +10,14 @@ const carouselInner = document.getElementById("carouselInner");
 const chartsSection = document.getElementsByClassName("charts")[0];
 
 submitBtn.addEventListener("click", () => {
+    let searchInput = searchBar.value.toLowerCase();
+    if (searchInput == "") {
+        return
+    }
     chartsSection.style.display = "block";
     currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
     carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
-    let searchInput = searchBar.value.toLowerCase();
+    
     fetch("https://api.unsplash.com/search/photos?query=" + searchInput + "&client_id=" + Data.UNSPLASH_API_KEY)
         .then(response => response.json())
         .then(unsplashData => {
