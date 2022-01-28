@@ -148,7 +148,7 @@ main {
     .currentInfoDiv {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-evenly;
         align-content: center;
         align-items: center;
 
@@ -162,7 +162,7 @@ main {
     width: 30px;
 }
 
-#myChart,
+#myFirstChart,
 #mySecondChart {
     display: none;
     background-color: rgba(248, 248, 240, 0.8);

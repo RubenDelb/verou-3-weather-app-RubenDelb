@@ -209,9 +209,9 @@ main {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
   -ms-flex-line-pack: center;
       align-content: center;
   -webkit-box-align: center;
@@ -227,7 +227,7 @@ main {
   width: 30px;
 }
 
-#myChart,
+#myFirstChart,
 #mySecondChart {
   display: none;
   background-color: rgba(248, 248, 240, 0.8);

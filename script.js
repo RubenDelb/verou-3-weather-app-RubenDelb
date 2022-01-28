@@ -1,4 +1,5 @@
 import Data from "/config.js";
+import {windDirectionConvertor} from "./windDirectionConvertor.js";
 
 const searchBar = document.getElementById("searchBar");
 const submitBtn = document.getElementById("submitBtn");
@@ -13,7 +14,7 @@ submitBtn.addEventListener("click", () => {
         .then(response => response.json())
         .then(unsplashData => {
             console.log(unsplashData);
-            document.body.style.backgroundImage = "url(" +unsplashData.results[0].urls.full
+            document.body.style.backgroundImage = "url(" +unsplashData.results[0].urls.full+ ")"
         })
 
     fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchInput + '&appid=' + Data.key)
@@ -72,10 +73,19 @@ function createCurrentCard(result) {
     iconCurrent.className = "iconCurrent";
     currentInfoDiv.appendChild(iconCurrent);
 
+    const currentTemperatureDiv = document.createElement("div");
+    currentTemperatureDiv.className = "currentTemperatureDiv";
+    currentInfoDiv.appendChild(currentTemperatureDiv);
+
     const temperatureCurrent = document.createElement("h1");
     temperatureCurrent.className = "temperatureCurrent";
     temperatureCurrent.innerHTML = Math.round(result.current.temp) + "°C";
-    currentInfoDiv.appendChild(temperatureCurrent);
+    currentTemperatureDiv.appendChild(temperatureCurrent);
+
+    const feelTemperatureCurrent = document.createElement("h6");
+    feelTemperatureCurrent.className = "feelTemperatureCurrent";
+    feelTemperatureCurrent.innerHTML = "feels like: " + Math.round(result.current.feels_like) + "°C";
+    currentTemperatureDiv.appendChild(feelTemperatureCurrent);
 
     const currentWindDiv = document.createElement("div");
     currentWindDiv.className = "currentWindDiv";
@@ -170,65 +180,7 @@ function createDailyCard(result, dailyResult) {
     temperatureDiv.appendChild(tempMin);
 }
 
-function windDirectionConvertor(dailyData) {
-    let deg = Math.floor(dailyData.wind_deg);
-    switch (true) {
-        case deg >= 360 && deg <= 21:
-            deg = "N";
-            break;
-        case deg >= 22 && deg <= 44:
-            deg = "NNE";
-            break;
-        case deg >= 45 && deg <= 66:
-            deg = "NE";
-            break;
-        case deg >= 67 && deg <= 89:
-            deg = "ENE";
-            break;
-        case deg >= 90 && deg <= 111:
-            deg = "E";
-            break;
-        case deg >= 112 && deg <= 134:
-            deg = "ESE";
-            break;
-        case deg >= 135 && deg <= 156:
-            deg = "SE";
-            break;
-        case deg >= 157 && deg <= 179:
-            deg = "SSE";
-            break;
-        case deg >= 180 && deg <= 201:
-            deg = "S";
-            break;
-        case deg >= 202 && deg <= 224:
-            deg = "SSW";
-            break;
-        case deg >= 225 && deg <= 246:
-            deg = "SW";
-            break;
-        case deg >= 247 && deg <= 269:
-            deg = "WSW";
-            break;
-        case deg >= 270 && deg <= 291:
-            deg = "W";
-            break;
-        case deg >= 292 && deg <= 314:
-            deg = "WNW";
-            break;
-        case deg >= 315 && deg <= 336:
-            deg = "NW";
-            break;
-        case deg >= 337 && deg <= 359:
-            deg = "NNW";
-            break;
-        default:
-            deg = "no data";
-    }
-    return deg;
-    // return is very important to output the wanted result when the function is called.
-}
-
-let myChart = null;
+let mySecondChart = null;
 
 function createChart(result) {
     const labels = getEveryHour(result);
@@ -290,17 +242,17 @@ function createChart(result) {
         }
     };
 
-    if (myChart != null) {
-        myChart.destroy();
+    if (mySecondChart != null) {
+        mySecondChart.destroy();
     }
 
-    myChart = new Chart(
-        document.getElementById('myChart'),
+    mySecondChart = new Chart(
+        document.getElementById('mySecondChart'),
         config
     );
 }
 
-let mySecondChart = null;
+let myFirstChart = null;
 
 function createSecondChart(result) {
     const labels = getEveryHour(result);
@@ -345,12 +297,12 @@ function createSecondChart(result) {
         }
     };
 
-    if (mySecondChart != null) {
-        mySecondChart.destroy();
+    if (myFirstChart != null) {
+        myFirstChart.destroy();
     }
 
-    mySecondChart = new Chart(
-        document.getElementById('mySecondChart'),
+    myFirstChart = new Chart(
+        document.getElementById('myFirstChart'),
         config
     );
 }
