@@ -7,8 +7,10 @@ const searchBar = document.getElementById("searchBar");
 const submitBtn = document.getElementById("submitBtn");
 const currentWeatherWrapper = document.getElementById("currentWeatherWrapper");
 const carouselInner = document.getElementById("carouselInner");
+const chartsSection = document.getElementsByClassName("charts")[0];
 
 submitBtn.addEventListener("click", () => {
+    chartsSection.style.display = "block";
     currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
     carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
     let searchInput = searchBar.value.toLowerCase();
@@ -196,8 +198,6 @@ function createFirstChart(result) {
         temperatureData.push(hourlyTemperatureData);
     }
 
-    console.log(temperatureData);
-
     let feelTemperatureData = [];
 
     for (let i = 0; i < 24; i++) {
@@ -308,28 +308,24 @@ function createRainChart(result) {
 
         if (typeof result.hourly[i].rain != "undefined") {
             //the raindata exists
-            console.log(result.hourly[i].rain);
             rainData.push(result.hourly[i].rain["1h"]);
         } else {
             // raindata does not exist in the openweathermap-data
             rainData.push(0);
         }
     }
-    const rainChartCanvas = document.getElementById('myRainChart');
 
     let snowData = [];
     for (let i = 0; i < 24; i++) {
 
         if (typeof result.hourly[i].snow != "undefined") {
             //the snowdata exists
-            console.log(result.hourly[i].snow);
             snowData.push(result.hourly[i].snow["1h"]);
         } else {
             // snowdata does not exist in the openweathermap-data
             snowData.push(0);
         }
     }
-    console.log(snowData);
 
     const data = {
         labels: labels,

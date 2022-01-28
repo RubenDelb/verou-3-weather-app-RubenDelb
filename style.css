@@ -79,29 +79,16 @@ main {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -ms-flex-line-pack: center;
-      align-content: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  justify-items: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  justify-self: center;
-  -ms-flex-item-align: center;
-      align-self: center;
-  width: 100vw;
 }
 
 .Slideshow .card {
-  margin-top: 20px;
+  color: #161414;
   width: 100vw;
-  background-color: rgba(255, 255, 240, 0.6);
-  -webkit-box-sizing: content-box;
-          box-sizing: content-box;
-  padding: 15px;
-  border-radius: 15px;
+  margin-top: 20px;
+  background-color: rgba(255, 255, 240, 0.7);
 }
 
 .Slideshow .card .displayDay {
@@ -227,10 +214,13 @@ main {
   width: 30px;
 }
 
-#myFirstChart,
-#mySecondChart,
-#myRainChart {
+.charts {
   display: none;
+}
+
+#firstChart,
+#secondChart,
+#rainChart {
   background-color: rgba(248, 240, 240, 0.9);
   width: 90vw;
   margin-left: 5vw;
@@ -238,5 +228,35 @@ main {
   padding: 15px;
   border-radius: 15px;
   margin-top: 20px;
+  color: #a8c2db;
+}
+
+@media only screen and (min-width: 1024px) {
+  .weatherDescription {
+    font-size: 22px;
+  }
+  .currentWeatherCard {
+    width: 40vw;
+  }
+  .secondMainPart {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+  }
+  #firstChart {
+    width: 40vw;
+  }
+  #secondChart {
+    margin-right: 2.5vw;
+    width: 40vw;
+  }
+  #rainChart {
+    margin-left: 2.5vw;
+    width: 40vw;
+  }
 }
 /*# sourceMappingURL=style.css.map */

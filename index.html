@@ -32,7 +32,7 @@
     </header>
     <main>
 
-        <div class="Slideshow">
+        <section class="Slideshow">
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
@@ -66,25 +66,28 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-        </div>
-        <div id="currentWeatherWrapper">
-            <!-- JAVASCRIPT CARD WITH CURRENT WEATHER COMES HERE IF SEARCHBUTTON IS CLICKED -->
-        </div>
-        <div>
-            <canvas id="myFirstChart">
-
-            </canvas>
-        </div>
-        <div>
-            <canvas id="mySecondChart">
-
-            </canvas>
-        </div>
-        <div>
-            <canvas id="myRainChart">
-
-            </canvas>
-        </div>
+        </section>
+        <section class="charts">
+            <div class="secondMainPart">
+                <div id="currentWeatherWrapper">
+                    <!-- JAVASCRIPT CARD WITH CURRENT WEATHER COMES HERE IF SEARCHBUTTON IS CLICKED -->
+                </div>
+                <div id="firstChart">
+                    <canvas id="myFirstChart">
+                    </canvas>
+                </div>
+            </div>
+            <div class="secondMainPart">
+                <div id="secondChart">
+                    <canvas id="mySecondChart">
+                    </canvas>
+                </div>
+                <div id="rainChart">
+                    <canvas id="myRainChart">
+                    </canvas>
+                </div>
+            </div>
+        </section>
     </main>
     <script type="module" src="script.js"></script>
 </body>
