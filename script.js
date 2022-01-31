@@ -3,11 +3,8 @@ import {
     windDirectionConvertor
 } from "./windDirectionConvertor.js";
 
-const searchBar = document.getElementById("searchBar");
-const submitBtn = document.getElementById("submitBtn");
 const currentWeatherWrapper = document.getElementById("currentWeatherWrapper");
 const carouselInner = document.getElementById("carouselInner");
-const chartsSection = document.getElementsByClassName("charts")[0];
 
 const createAllDayCards = (result) => {
     for (let i = 1; i < result.daily.length; i++) {
@@ -15,64 +12,49 @@ const createAllDayCards = (result) => {
     }
 }
 
+function createElement(element, className, parent) {
+    const newElement = document.createElement(element);
+    newElement.classList = className;
+    parent.appendChild(newElement);
+
+    return newElement;
+}
+
 const createCurrentCard = (result) => {
-    const currentWeatherWrapper = document.getElementById("currentWeatherWrapper")
-    const currentWeatherCard = document.createElement("div");
-    currentWeatherCard.classList.add("currentWeatherCard");
-    currentWeatherWrapper.appendChild(currentWeatherCard);
+    const currentWeatherWrapper = document.getElementById("currentWeatherWrapper");
+    const currentResult = result.current;
+    const currentWeatherCard = createElement("div", "currentWeatherCard", currentWeatherWrapper);
 
-    const currentTitleDiv = document.createElement("div");
-    currentTitleDiv.className = "currentTitleDiv";
-    currentWeatherCard.appendChild(currentTitleDiv);
+    const currentTitleDiv = createElement("div", "currentTitleDiv", currentWeatherCard)
 
-    const currentInfoDiv = document.createElement("div");
-    currentInfoDiv.className = "currentInfoDiv";
-    currentWeatherCard.appendChild(currentInfoDiv);
+    const currentInfoDiv = createElement("div", "currentInfoDiv", currentWeatherCard);
 
-    const currentTitle = document.createElement("h3");
+    const currentTitle = createElement("h3", "currentTitle", currentTitleDiv)
     currentTitle.innerHTML = "Current Weather";
-    currentTitle.className = "currentTitle";
-    currentTitleDiv.append(currentTitle);
 
-    const currentHour = document.createElement("p");
-    let sec = result.current.dt + result.timezone_offset;
+    const currentHour = createElement("p", "currentHour", currentTitleDiv)
+    let sec = currentResult.dt + result.timezone_offset;
     currentHour.innerHTML = "at " + (new Date(sec * 1000).getHours() - 1) + "h";
-    currentHour.className = "currentHour";
-    currentTitleDiv.append(currentHour);
 
-    const iconCurrent = document.createElement("img");
-    iconCurrent.src = "http://openweathermap.org/img/wn/" + result.current.weather[0].icon + "@2x.png";
-    iconCurrent.className = "iconCurrent";
-    currentInfoDiv.appendChild(iconCurrent);
+    const iconCurrent = createElement("img", "iconCurrent", currentInfoDiv);
+    iconCurrent.src = "http://openweathermap.org/img/wn/" + currentResult.weather[0].icon + "@2x.png";
 
-    const currentTemperatureDiv = document.createElement("div");
-    currentTemperatureDiv.className = "currentTemperatureDiv";
-    currentInfoDiv.appendChild(currentTemperatureDiv);
+    const currentTemperatureDiv = createElement("div", "currentTemperatureDiv", currentInfoDiv);
 
-    const temperatureCurrent = document.createElement("h1");
-    temperatureCurrent.className = "temperatureCurrent";
-    temperatureCurrent.innerHTML = Math.round(result.current.temp) + "°C";
-    currentTemperatureDiv.appendChild(temperatureCurrent);
+    const temperatureCurrent = createElement("h1", "temperatureCurrent", currentTemperatureDiv);
+    temperatureCurrent.innerHTML = Math.round(currentResult.temp) + "°C";
 
-    const feelTemperatureCurrent = document.createElement("h6");
-    feelTemperatureCurrent.className = "feelTemperatureCurrent";
-    feelTemperatureCurrent.innerHTML = "feels like: " + Math.round(result.current.feels_like) + "°C";
-    currentTemperatureDiv.appendChild(feelTemperatureCurrent);
+    const feelTemperatureCurrent = createElement("h6", "feelTemperatureCurrent", currentTemperatureDiv);
+    feelTemperatureCurrent.innerHTML = "feels like: " + Math.round(currentResult.feels_like) + "°C";
 
-    const currentWindDiv = document.createElement("div");
-    currentWindDiv.className = "currentWindDiv";
-    currentInfoDiv.appendChild(currentWindDiv);
+    const currentWindDiv = createElement("div", "currentWindDiv", currentInfoDiv);
 
-    const currentWindIcon = document.createElement("img");
+    const currentWindIcon = createElement("img", "currentWindIcon", currentWindDiv);
     currentWindIcon.src = "/images/up-arrow-svgrepo-com.svg";
-    currentWindIcon.className = "currentWindIcon"
-    currentWindIcon.style.transform = "rotate3d(0, 0, 1, " + result.current.wind_deg + "deg)";
-    currentWindDiv.appendChild(currentWindIcon);
+    currentWindIcon.style.transform = "rotate3d(0, 0, 1, " + currentResult.wind_deg + "deg)";
 
-    const currentWindSpeed = document.createElement("h5");
-    currentWindSpeed.className = "currentWindSpeed";
-    currentWindSpeed.innerHTML = Math.round(result.current.wind_speed * 3.6) + " km/h"
-    currentWindDiv.appendChild(currentWindSpeed);
+    const currentWindSpeed = createElement("h5", "currentWindSpeed", currentWindDiv);
+    currentWindSpeed.innerHTML = Math.round(currentResult.wind_speed * 3.6) + " km/h"
 }
 
 const createDailyCard = (result, dailyResult) => {
@@ -85,76 +67,49 @@ const createDailyCard = (result, dailyResult) => {
     }
     carouselInner.appendChild(card);
 
-    const displayDay = document.createElement("h3");
+    const displayDay = createElement("h3", "displayDay", card);
     let sec = dailyResult.dt + result.timezone_offset;
     displayDay.innerHTML = new Date(sec * 1000).toDateString();
-    displayDay.className = "displayDay";
-    card.append(displayDay);
 
-    const weatherImgDiv = document.createElement("div");
-    weatherImgDiv.className = "weatherImgDiv";
-    card.appendChild(weatherImgDiv);
+    const weatherImgDiv = createElement("div", "weatherImgDiv", card);
 
-    const weatherInfoDiv = document.createElement("div");
-    weatherInfoDiv.className = "weatherInfoDiv";
-    card.appendChild(weatherInfoDiv);
+    const weatherInfoDiv = createElement("div", "weatherInfoDiv", card);
 
-    const weatherIcon = document.createElement("img");
+    const weatherIcon = createElement("img", "weatherIcon", weatherImgDiv);
     weatherIcon.src = "http://openweathermap.org/img/wn/" + dailyResult.weather[0].icon + "@2x.png";
-    weatherIcon.className = "weatherIcon";
-    weatherImgDiv.appendChild(weatherIcon);
 
-    const windDiv = document.createElement("div");
-    windDiv.className = "windDiv";
-    weatherImgDiv.appendChild(windDiv);
+    const windDiv = createElement("div", "windDiv", weatherImgDiv);
 
-    const windIcon = document.createElement("img");
+    const windIcon = createElement("img", "windIcon", windDiv);
     windIcon.src = "/images/up-arrow-svgrepo-com.svg";
-    windIcon.className = "windIcon"
     windIcon.style.transform = "rotate3d(0, 0, 1, " + dailyResult.wind_deg + "deg)";
-    windDiv.appendChild(windIcon);
 
-    const windDescriptionDiv = document.createElement("div");
-    windDescriptionDiv.className = "windDescriptionDiv";
-    windDiv.appendChild(windDescriptionDiv);
+    const windDescriptionDiv = createElement("div", "windDescriptionDiv", windDiv);
 
-    const windSpeed = document.createElement("h5");
-    windSpeed.className = "windSpeed";
+    const windSpeed = createElement("h5", "windSpeed", windDescriptionDiv);
     windSpeed.innerHTML = Math.round(dailyResult.wind_speed * 3.6) + " km/h"
-    windDescriptionDiv.appendChild(windSpeed);
 
     const degree = windDirectionConvertor(dailyResult);
     //result AND i are inside the () to send the values of both to the function, 
     // so the function has the correct parameters to work with
 
-    const windDirection = document.createElement("p");
-    windDirection.className = "windDirection";
+    const windDirection = createElement("p", "windDirection", windDescriptionDiv);
     windDirection.innerHTML = degree;
-    windDescriptionDiv.appendChild(windDirection);
 
-    const temperatureDiv = document.createElement("div");
-    temperatureDiv.className = "temperatureDiv";
-    weatherInfoDiv.appendChild(temperatureDiv);
+    const temperatureDiv = createElement("div", "temperatureDiv", weatherInfoDiv);
 
-    const weatherDescription = document.createElement("p");
-    weatherDescription.className = "weatherDescription";
+    const weatherDescription = createElement("p", "weatherDescription", weatherInfoDiv);
     weatherDescription.innerHTML = dailyResult.weather[0].description;
-    weatherInfoDiv.appendChild(weatherDescription);
 
-    const tempMax = document.createElement("p");
-    tempMax.className = "tempMax";
+    const tempMax = createElement("p", "tempMax", temperatureDiv);
     tempMax.innerHTML = "Max: " + Math.round(dailyResult.temp.max) + "°C";
-    temperatureDiv.appendChild(tempMax);
 
-    const tempMin = document.createElement("p");
-    tempMin.className = "tempMin";
+    const tempMin = createElement("p", "tempMin", temperatureDiv);
     tempMin.innerHTML = "Min: " + Math.round(dailyResult.temp.min) + "°C";
-    temperatureDiv.appendChild(tempMin);
 }
 
 const getEveryHour = (result) => {
     const labels = [];
-
     for (let i = 0; i < 24; i++) { //Create the labels: ex: 14h, 15h, 16h,... for the upcoming 24hours
         const unixHour = result.hourly[i].dt + result.timezone_offset;
         const localHour = (new Date(unixHour * 1000).getHours()) + "h";
@@ -338,11 +293,14 @@ const createRainChart = (result) => {
     );
 }
 
+const submitBtn = document.getElementById("submitBtn");
 submitBtn.addEventListener("click", () => {
+    const searchBar = document.getElementById("searchBar");
     let searchInput = searchBar.value.toLowerCase();
     if (searchInput == "") {
         return
     }
+    const chartsSection = document.getElementsByClassName("charts")[0];
     chartsSection.style.display = "block";
     currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
     carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
