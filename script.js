@@ -9,6 +9,12 @@ const currentWeatherWrapper = document.getElementById("currentWeatherWrapper");
 const carouselInner = document.getElementById("carouselInner");
 const chartsSection = document.getElementsByClassName("charts")[0];
 
+const createAllDayCards = (result) => {
+    for (let i = 1; i < result.daily.length; i++) {
+        createDailyCard(result, result.daily[i]);
+    }
+}
+
 submitBtn.addEventListener("click", () => {
     let searchInput = searchBar.value.toLowerCase();
     if (searchInput == "") {
@@ -17,7 +23,7 @@ submitBtn.addEventListener("click", () => {
     chartsSection.style.display = "block";
     currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
     carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
-    
+
     fetch("https://api.unsplash.com/search/photos?query=" + searchInput + "&client_id=" + Data.UNSPLASH_API_KEY)
         .then(response => response.json())
         .then(unsplashData => {
@@ -36,19 +42,11 @@ submitBtn.addEventListener("click", () => {
                 .then(response => response.json())
                 .then(result => {
                     console.log(result);
-
                     createCurrentCard(result);
-
                     createDailyCard(result, result.daily[0]);
-
-                    for (let i = 1; i < result.daily.length; i++) {
-                        createDailyCard(result, result.daily[i]);
-                    }
-
+                    createAllDayCards(result);
                     createFirstChart(result);
-
                     createSecondChart(result);
-
                     createRainChart(result);
                 })
         });
@@ -247,7 +245,7 @@ function createFirstChart(result) {
 let mySecondChart = null;
 
 function msToBeaufort(ms) {
-    return Math.ceil(Math.cbrt(Math.pow(ms/0.836, 2)));
+    return Math.ceil(Math.cbrt(Math.pow(ms / 0.836, 2)));
 }
 
 function createSecondChart(result) {
