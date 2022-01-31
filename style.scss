@@ -146,12 +146,20 @@ main {
         .iconCurrent {
             width: 130px;
         }
+
+        .currentWindDiv {
+            .currentWindIcon {
+                width: 30px;
+            }
+
+            .currentWindSpeed {
+                margin-top: 10px;
+            }
+        }
     }
 }
 
-.currentWindIcon {
-    width: 30px;
-}
+
 
 .charts {
     display: none;

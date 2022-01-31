@@ -210,8 +210,12 @@ main {
   width: 130px;
 }
 
-.currentWindIcon {
+.currentWeatherCard .currentInfoDiv .currentWindDiv .currentWindIcon {
   width: 30px;
+}
+
+.currentWeatherCard .currentInfoDiv .currentWindDiv .currentWindSpeed {
+  margin-top: 10px;
 }
 
 .charts {
