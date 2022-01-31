@@ -1,16 +1,8 @@
 import Data from "/config.js";
-import {
-    windDirectionConvertor
-} from "./windDirectionConvertor.js";
+import { windDirectionConvertor } from "./windDirectionConvertor.js";
 
 const currentWeatherWrapper = document.getElementById("currentWeatherWrapper");
 const carouselInner = document.getElementById("carouselInner");
-
-const createAllDayCards = (result) => {
-    for (let i = 1; i < result.daily.length; i++) {
-        createDailyCard(result, result.daily[i]);
-    }
-}
 
 function createElement(element, className, parent) {
     const newElement = document.createElement(element);
@@ -70,8 +62,6 @@ const createDailyCard = (result, dailyResult) => {
     const windSpeed = createElement("h5", "windSpeed", windDescriptionDiv);
     windSpeed.innerHTML = Math.round(dailyResult.wind_speed * 3.6) + " km/h"
     const degree = windDirectionConvertor(dailyResult);
-    //result AND i are inside the () to send the values of both to the function, 
-    // so the function has the correct parameters to work with
     const windDirection = createElement("p", "windDirection", windDescriptionDiv);
     windDirection.innerHTML = degree;
     const temperatureDiv = createElement("div", "temperatureDiv", weatherInfoDiv);
@@ -81,6 +71,12 @@ const createDailyCard = (result, dailyResult) => {
     tempMax.innerHTML = "Max: " + Math.round(dailyResult.temp.max) + "°C";
     const tempMin = createElement("p", "tempMin", temperatureDiv);
     tempMin.innerHTML = "Min: " + Math.round(dailyResult.temp.min) + "°C";
+}
+
+const createAllDayCards = (result) => {
+    for (let i = 0; i < result.daily.length; i++) {
+        createDailyCard(result, result.daily[i]);
+    }
 }
 
 const getEveryHour = (result) => {
@@ -152,16 +148,12 @@ const msToBeaufort = (ms) => {
 
 const createSecondChart = (result) => {
     const labels = getEveryHour(result);
-
     let windSpeedData = [];
-
     for (let i = 0; i < 24; i++) {
         const hourlyWindSpeed = msToBeaufort(result.hourly[i].wind_speed);
         windSpeedData.push(hourlyWindSpeed);
     }
-
     let windGustsData = [];
-
     for (let i = 0; i < 24; i++) {
         const hourlyWindGusts = msToBeaufort(result.hourly[i].wind_gust);
         windGustsData.push(hourlyWindGusts);
@@ -179,7 +171,6 @@ const createSecondChart = (result) => {
             borderColor: 'rgb(44, 116, 150)',
         }]
     };
-
     const config = {
         type: 'line',
         data: data,
@@ -191,11 +182,9 @@ const createSecondChart = (result) => {
             }
         }
     };
-
     if (mySecondChart != null) {
         mySecondChart.destroy();
     }
-
     mySecondChart = new Chart(
         document.getElementById('mySecondChart'),
         config
@@ -204,31 +193,22 @@ const createSecondChart = (result) => {
 
 const createRainChart = (result) => {
     const labels = getEveryHour(result);
-
     let rainData = [];
     for (let i = 0; i < 24; i++) {
-
-        if (typeof result.hourly[i].rain != "undefined") {
-            //the raindata exists
+        if (typeof result.hourly[i].rain != "undefined") { //the raindata exists
             rainData.push(result.hourly[i].rain["1h"]);
-        } else {
-            // raindata does not exist in the openweathermap-data
+        } else { // raindata does not exist in the openweathermap-data
             rainData.push(0);
         }
     }
-
     let snowData = [];
     for (let i = 0; i < 24; i++) {
-
-        if (typeof result.hourly[i].snow != "undefined") {
-            //the snowdata exists
+        if (typeof result.hourly[i].snow != "undefined") { //the snowdata exists
             snowData.push(result.hourly[i].snow["1h"]);
-        } else {
-            // snowdata does not exist in the openweathermap-data
+        } else {// snowdata does not exist in the openweathermap-data
             snowData.push(0);
         }
     }
-
     const data = {
         labels: labels,
         datasets: [{
@@ -245,7 +225,6 @@ const createRainChart = (result) => {
             }
         ]
     };
-
     const config = {
         type: 'bar',
         data: data,
@@ -257,11 +236,9 @@ const createRainChart = (result) => {
             }
         }
     };
-
     if (myRainChart != null) {
         myRainChart.destroy();
     }
-
     myRainChart = new Chart(
         document.getElementById('myRainChart'),
         config
@@ -272,14 +249,12 @@ const submitBtn = document.getElementById("submitBtn");
 submitBtn.addEventListener("click", () => {
     const searchBar = document.getElementById("searchBar");
     let searchInput = searchBar.value.toLowerCase();
-    if (searchInput == "") {
+    if (searchInput === "") {
         return
     }
     const chartsSection = document.getElementsByClassName("charts")[0];
     chartsSection.style.display = "block";
-    currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
-    carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
-
+    carouselInner.innerHTML, currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
     fetch("https://api.unsplash.com/search/photos?query=" + searchInput + "&client_id=" + Data.UNSPLASH_API_KEY)
         .then(response => response.json())
         .then(unsplashData => {
@@ -287,19 +262,16 @@ submitBtn.addEventListener("click", () => {
             const randomNumber = Math.round(Math.random() * unsplashData.results.length)
             document.body.style.backgroundImage = "url(" + unsplashData.results[randomNumber].urls.regular + ")"
         })
-
     fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchInput + '&appid=' + Data.key)
         .then(response => response.json())
         .then(data => {
             const lat = data.city.coord.lat; //catch the latitude of the city that the user has typed
             const long = data.city.coord.lon; //catch the longitude of the city that the user has typed
-
             fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&exclude=minutely&units=metric&appid=' + Data.key)
                 .then(response => response.json())
                 .then(result => {
                     console.log(result);
                     createCurrentCard(result);
-                    createDailyCard(result, result.daily[0]);
                     createAllDayCards(result);
                     createFirstChart(result);
                     createSecondChart(result);
