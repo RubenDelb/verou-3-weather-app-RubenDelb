@@ -15,44 +15,7 @@ const createAllDayCards = (result) => {
     }
 }
 
-submitBtn.addEventListener("click", () => {
-    let searchInput = searchBar.value.toLowerCase();
-    if (searchInput == "") {
-        return
-    }
-    chartsSection.style.display = "block";
-    currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
-    carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
-
-    fetch("https://api.unsplash.com/search/photos?query=" + searchInput + "&client_id=" + Data.UNSPLASH_API_KEY)
-        .then(response => response.json())
-        .then(unsplashData => {
-            console.log(unsplashData);
-            const randomNumber = Math.round(Math.random() * unsplashData.results.length)
-            document.body.style.backgroundImage = "url(" + unsplashData.results[randomNumber].urls.regular + ")"
-        })
-
-    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchInput + '&appid=' + Data.key)
-        .then(response => response.json())
-        .then(data => {
-            const lat = data.city.coord.lat; //catch the latitude of the city that the user has typed
-            const long = data.city.coord.lon; //catch the longitude of the city that the user has typed
-
-            fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&exclude=minutely&units=metric&appid=' + Data.key)
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result);
-                    createCurrentCard(result);
-                    createDailyCard(result, result.daily[0]);
-                    createAllDayCards(result);
-                    createFirstChart(result);
-                    createSecondChart(result);
-                    createRainChart(result);
-                })
-        });
-});
-
-function createCurrentCard(result) {
+const createCurrentCard = (result) => {
     const currentWeatherWrapper = document.getElementById("currentWeatherWrapper")
     const currentWeatherCard = document.createElement("div");
     currentWeatherCard.classList.add("currentWeatherCard");
@@ -112,7 +75,7 @@ function createCurrentCard(result) {
     currentWindDiv.appendChild(currentWindSpeed);
 }
 
-function createDailyCard(result, dailyResult) {
+const createDailyCard = (result, dailyResult) => {
     const carouselInner = document.getElementById("carouselInner")
     const card = document.createElement("div");
     if (dailyResult == result.daily[0]) {
@@ -189,9 +152,20 @@ function createDailyCard(result, dailyResult) {
     temperatureDiv.appendChild(tempMin);
 }
 
-let myFirstChart = null;
+const getEveryHour = (result) => {
+    const labels = [];
 
-function createFirstChart(result) {
+    for (let i = 0; i < 24; i++) { //Create the labels: ex: 14h, 15h, 16h,... for the upcoming 24hours
+        const unixHour = result.hourly[i].dt + result.timezone_offset;
+        const localHour = (new Date(unixHour * 1000).getHours()) + "h";
+        labels.push(localHour); //push every created hour inside the "labels"-array.
+    }
+    return labels;
+}
+
+let myFirstChart, mySecondChart, myRainChart = null;
+
+const createFirstChart = (result) => {
     const labels = getEveryHour(result);
 
     let temperatureData = [];
@@ -242,13 +216,11 @@ function createFirstChart(result) {
     );
 }
 
-let mySecondChart = null;
-
-function msToBeaufort(ms) {
+const msToBeaufort = (ms) => {
     return Math.ceil(Math.cbrt(Math.pow(ms / 0.836, 2)));
 }
 
-function createSecondChart(result) {
+const createSecondChart = (result) => {
     const labels = getEveryHour(result);
 
     let windSpeedData = [];
@@ -300,9 +272,7 @@ function createSecondChart(result) {
     );
 }
 
-let myRainChart = null;
-
-function createRainChart(result) {
+const createRainChart = (result) => {
     const labels = getEveryHour(result);
 
     let rainData = [];
@@ -368,13 +338,39 @@ function createRainChart(result) {
     );
 }
 
-function getEveryHour(result) {
-    const labels = [];
-
-    for (let i = 0; i < 24; i++) { //Create the labels: ex: 14h, 15h, 16h,... for the upcoming 24hours
-        const unixHour = result.hourly[i].dt + result.timezone_offset;
-        const localHour = (new Date(unixHour * 1000).getHours()) + "h";
-        labels.push(localHour); //push every created hour inside the "labels"-array.
+submitBtn.addEventListener("click", () => {
+    let searchInput = searchBar.value.toLowerCase();
+    if (searchInput == "") {
+        return
     }
-    return labels;
-}
+    chartsSection.style.display = "block";
+    currentWeatherWrapper.innerHTML = ""; //Make sure the previous searchresults will disappear
+    carouselInner.innerHTML = ""; //Make sure the previous searchresults will disappear
+
+    fetch("https://api.unsplash.com/search/photos?query=" + searchInput + "&client_id=" + Data.UNSPLASH_API_KEY)
+        .then(response => response.json())
+        .then(unsplashData => {
+            console.log(unsplashData);
+            const randomNumber = Math.round(Math.random() * unsplashData.results.length)
+            document.body.style.backgroundImage = "url(" + unsplashData.results[randomNumber].urls.regular + ")"
+        })
+
+    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchInput + '&appid=' + Data.key)
+        .then(response => response.json())
+        .then(data => {
+            const lat = data.city.coord.lat; //catch the latitude of the city that the user has typed
+            const long = data.city.coord.lon; //catch the longitude of the city that the user has typed
+
+            fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&exclude=minutely&units=metric&appid=' + Data.key)
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                    createCurrentCard(result);
+                    createDailyCard(result, result.daily[0]);
+                    createAllDayCards(result);
+                    createFirstChart(result);
+                    createSecondChart(result);
+                    createRainChart(result);
+                })
+        });
+});
